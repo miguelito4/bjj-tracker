@@ -29,7 +29,10 @@ export default function AuthPage() {
           BJJ Tracker
         </h1>
         <p style={{ color: "#52525b", fontSize: 14, marginBottom: 32 }}>
-          Log mat time. Track progress. Evolve your game.
+          Log mat time. Track progress.
+        </p>
+        <p style={{ color: "#3f3f46", fontSize: 12, marginBottom: 32, lineHeight: 1.5 }}>
+          Completely private. Your data is isolated at the database level. No tracking. No analytics. No ads.
         </p>
         {sent ? (
           <div style={{
