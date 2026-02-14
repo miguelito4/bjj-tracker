@@ -63,4 +63,15 @@ export default function AuthPage() {
               disabled={loading}
               style={{
                 width: "100%", padding: 14, borderRadius: 12, border: "none",
-                background: "#3b82f6", color: "#f
+                background: "#3b82f6", color: "#fff", fontSize: 15,
+                fontWeight: 600, cursor: "pointer", opacity: loading ? 0.6 : 1,
+              }}
+            >
+              {loading ? "Sending..." : "Send Magic Link"}
+            </button>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}
