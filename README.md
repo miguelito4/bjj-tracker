@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BJJ Tracker
+
+A free, minimalist progress tracker for Brazilian Jiu-Jitsu.
+
+Log mat time, track techniques, and measure consistency. Synced across devices.
+
+## Use it now!
+
+**[bjj.caseyjr.org](https://bjj.caseyjr.org)** — enter your email, click the magic link, start tracking. No download, no password, no setup.
+
+On iPhone, tap Share → Add to Home Screen for a native app experience.
+
+## Features
+
+- **Session Logging** — Log session type (Gi, No-Gi, Open Mat, etc.), intensity, mat hours, techniques covered, and rolling notes in seconds.
+- **Technique Library** — 50+ categorized BJJ techniques (guard, passing, submissions, sweeps, takedowns, escapes, back attacks, control). Pin the moves you're currently drilling to your dashboard if you wish.
+- **Add Custom Techniques** — Add your own techniques to the library.
+- **Analytics** — Total mat hours, monthly breakdown, weekly consistency chart, session type distribution, and most-practiced techniques.
+- **Cross-Device Sync** — Log on your laptop, see it on your phone and vice versa. Data syncs via Supabase.
+- **PWA** — Add to home screen on iPhone for a native app experience. Dark mode, no browser chrome.
+- **Magic Link Auth** — No passwords. Enter your email, click the link, you're in.
+
+## Privacy
+
+Your data is yours. Each user's data is isolated at the database level with Row Level Security. No tracking, no analytics on users, no ads.
+
+## Tech Stack
+
+- **Framework:** Next.js 15 (App Router) + TypeScript
+- **Styling:** Inline styles, Tailwind-inspired color palette
+- **Database:** Supabase (PostgreSQL) with Row Level Security
+- **Auth:** Supabase Magic Link (passwordless)
+- **Charts:** Recharts
+- **Icons:** Lucide React
+- **Hosting:** Vercel
+- **PWA:** Service worker + Web App Manifest with full iOS support
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- A free [Supabase](https://supabase.com) account
+
+### Setup
+
+1. **Clone the repo**
+
+```bash
+git clone https://github.com/miguelito4/bjj-tracker.git
+cd bjj-tracker
+npm install
+```
+
+2. **Create a Supabase project** at [supabase.com/dashboard](https://supabase.com/dashboard) and run `schema.sql` in the SQL Editor to create all tables and policies.
+
+3. **Add environment variables** — copy `.env.example` to `.env.local` and fill in your Supabase credentials:
+
+```bash
+cp .env.example .env.local
+```
+
+```
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+4. **Run it**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Deploy
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Deploy to Vercel in one click or via CLI:
 
-## Learn More
+```bash
+vercel
+```
 
-To learn more about Next.js, take a look at the following resources:
+Add your environment variables in the Vercel dashboard and update your Supabase **Authentication → URL Configuration** with your production URL.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Database Schema
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+See `schema.sql` for the full schema. Tables:
 
-## Deploy on Vercel
+- **profiles** — User display name, belt rank, academy
+- **sessions** — Session date, type, intensity, mat hours, notes, techniques covered
+- **pinned_techniques** — Techniques pinned to a user's dashboard
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+All tables have Row Level Security policies ensuring users can only access their own data.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## License
+
+MIT License — see [LICENSE](LICENSE) for details.
+
+## Author
+
+Built by [Mike Casey](https://github.com/miguelito4) and Claude.
