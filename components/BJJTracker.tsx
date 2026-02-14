@@ -447,23 +447,29 @@ function DashboardPage({ sessions, pinnedTechs, techniques = TECHNIQUES, onUnpin
     ? (sessions.reduce((s: number,x: any)=>s+x.intensity_level,0)/sessions.length).toFixed(1) : "0";
 
   const weeklyData = useMemo(() => {
-    const weeks: any = {};
-    for (let i = 7; i >= 0; i--) {
-      const d = new Date(now);
-      d.setDate(d.getDate() - d.getDay() - (i * 7));
-      const key = d.toISOString().slice(0,10);
-      weeks[key] = { week: fmt(d.toISOString()), sessions: 0, hours: 0 };
+    const weeks: any[] = [];
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() - (i * 7));
+      weeks.push({
+        weekStart: d,
+        week: d.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+        sessions: 0,
+        hours: 0,
+      });
     }
     sessions.forEach((s: any) => {
-      const d = new Date(s.session_date);
-      d.setDate(d.getDate() - d.getDay());
-      const key = d.toISOString().slice(0,10);
-      if (weeks[key]) {
-        weeks[key].sessions++;
-        weeks[key].hours += s.mat_hours;
+      const [y, m, d] = s.session_date.split("-").map(Number);
+      const sd = new Date(y, m - 1, d);
+      const weekStart = new Date(y, m - 1, d - sd.getDay());
+      for (const w of weeks) {
+        if (weekStart.getTime() === w.weekStart.getTime()) {
+          w.sessions++;
+          w.hours += s.mat_hours;
+          break;
+        }
       }
     });
-    return Object.values(weeks);
+    return weeks;
   }, [sessions]);
 
   const pinned = techniques.filter((t: any) => pinnedTechs.includes(t.id));
@@ -495,7 +501,7 @@ function DashboardPage({ sessions, pinnedTechs, techniques = TECHNIQUES, onUnpin
         <ResponsiveContainer width="100%" height={140}>
           <BarChart data={weeklyData} barSize={20}>
             <XAxis dataKey="week" tick={{ fill:"#52525b", fontSize:11 }} axisLine={false} tickLine={false} />
-            <YAxis hide domain={[0,"dataMax+1"]} />
+            <YAxis tick={{ fill:"#52525b", fontSize:11 }} axisLine={false} tickLine={false} width={20} allowDecimals={false} domain={[0,"dataMax+1"]} />
             <Tooltip
               cursor={false}
               contentStyle={{ background:"#27272a", border:"1px solid #3f3f46", borderRadius:10, fontSize:13 }}
