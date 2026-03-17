@@ -1,0 +1,21 @@
+name: Keep Supabase Alive
+
+on:
+  schedule:
+    # Runs at 9:00 AM UTC every Monday and Thursday
+    - cron: "0 9 * * 1,4"
+  workflow_dispatch: # Allows manual trigger from GitHub UI
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping keep-alive endpoint
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://bjj.caseyjr.org/api/keep-alive)
+          echo "Response code: $response"
+          if [ "$response" != "200" ]; then
+            echo "Keep-alive ping failed with status $response"
+            exit 1
+          fi
+          echo "Keep-alive ping successful"

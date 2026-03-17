@@ -24,6 +24,14 @@ On iPhone, tap Share → Add to Home Screen for a native app experience.
 
 Your data is yours. Each user's data is isolated at the database level with Row Level Security. No tracking, no analytics on users, no ads.
 
+## Screenshots
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/c16ad2d2-40ad-410c-b914-13391b30dc86" width="250" />
+  <img src="https://github.com/user-attachments/assets/0c724a55-9f2c-4c37-b381-5a42fc738c2d" width="250" />
+  <img src="https://github.com/user-attachments/assets/fa22bdeb-a22a-4be8-9a62-9da7f1eb0ba7" width="250" />
+</p>
+
 ## Tech Stack
 
 - **Framework:** Next.js 15 (App Router) + TypeScript
