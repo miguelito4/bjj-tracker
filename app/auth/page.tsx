@@ -1,11 +1,15 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 
 export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
+    useEffect(() => {
+      const saved = localStorage.getItem("bjj-tracker-email");
+      if (saved) setEmail(saved);
+    }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,7 +19,10 @@ export default function AuthPage() {
       options: { emailRedirectTo: `${window.location.origin}` },
     });
     setLoading(false);
-    if (!error) setSent(true);
+    if (!error) {
+      localStorage.setItem("bjj-tracker-email", email);
+      setSent(true);
+    }
   };
 
   return (

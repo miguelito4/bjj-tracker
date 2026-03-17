@@ -7,7 +7,7 @@ import {
   ChevronDown, ChevronRight, Clock, Flame, ArrowLeft,
   Shield, Target, RefreshCw, ArrowDownCircle, Unlock, Lock,
   Crosshair, ArrowRightCircle, Check, Trash2, Edit3, Zap, Calendar,
-  TrendingUp
+  TrendingUp, Download, LogOut
 } from "lucide-react";
 
 /* ─── DATA ─── */
@@ -1008,6 +1008,41 @@ function StatsPage({ sessions, techniques = TECHNIQUES }: any) {
           </div>
         </div>
       )}
+{/* Export Data */}
+<button
+        onClick={() => {
+          const headers = ["Date","Type","Intensity","Hours","Techniques","Notes"];
+          const rows = sessions.map((s: any) => [
+            s.session_date,
+            s.session_type,
+            s.intensity_level,
+            s.mat_hours,
+            (s.techniques_covered||[]).map((id: string) => {
+              const t = TECHNIQUES.find((t: any) => t.id === id);
+              return t ? t.name : id;
+            }).join("; "),
+            `"${(s.notes||"").replace(/"/g, '""')}"`,
+          ]);
+          const csv = [headers, ...rows].map(r => r.join(",")).join("\n");
+          const blob = new Blob([csv], { type: "text/csv" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `bjj-sessions-${new Date().toISOString().slice(0,10)}.csv`;
+          a.click();
+          URL.revokeObjectURL(url);
+        }}
+        style={{
+          width:"100%", marginTop:20, padding:14, borderRadius:12,
+          border:"1px solid #27272a", background:"#18181b",
+          color:"#a1a1aa", fontSize:14, fontWeight:600,
+          cursor:"pointer", display:"flex", alignItems:"center",
+          justifyContent:"center", gap:8,
+        }}
+      >
+        <Download size={16} />
+        Export All Sessions (CSV)
+      </button>
     </div>
   );
 }
@@ -1203,6 +1238,21 @@ export default function BJJTracker() {
           );
         })}
       </nav>
+      
+      {/* Sign Out */}
+      <button
+        onClick={async () => {
+          await supabase.auth.signOut();
+          window.location.href = "/auth";
+        }}
+        style={{
+          position:"fixed", top:16, right:"calc(50% - 224px)", zIndex:50,
+          background:"none", border:"none", cursor:"pointer",
+          padding:8, borderRadius:8,
+        }}
+      >
+        <LogOut size={18} color="#52525b" />
+      </button>
 
       {/* Log Modal */}
       <QuickLogModal
